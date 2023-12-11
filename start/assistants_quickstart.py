@@ -6,6 +6,7 @@ import time
 
 load_dotenv()
 OPEN_AI_API_KEY = os.getenv("OPEN_AI_API_KEY")
+OPENAI_ASSISTANT_ID = os.getenv("OPENAI_ASSISTANT_ID")
 client = OpenAI(api_key=OPEN_AI_API_KEY)
 
 
@@ -18,7 +19,7 @@ def upload_file(path):
     return file
 
 
-file = upload_file("../data/airbnb-faq.pdf")
+# file = upload_file("../data/airbnb-faq.pdf")
 
 
 # --------------------------------------------------------------
@@ -38,8 +39,8 @@ def create_assistant(file):
     return assistant
 
 
-assistant = create_assistant(file)
-
+# assistant = create_assistant(file)
+# print(assistant.id)
 
 # --------------------------------------------------------------
 # Thread management
@@ -91,7 +92,7 @@ def generate_response(message_body, wa_id, name):
 # --------------------------------------------------------------
 def run_assistant(thread):
     # Retrieve the Assistant
-    assistant = client.beta.assistants.retrieve("asst_7Wx2nQwoPWSf710jrdWTDlfE")
+    assistant = client.beta.assistants.retrieve(OPENAI_ASSISTANT_ID)
 
     # Run the assistant
     run = client.beta.threads.runs.create(
@@ -116,10 +117,14 @@ def run_assistant(thread):
 # Test assistant
 # --------------------------------------------------------------
 
-new_message = generate_response("What's the check in time?", "123", "John")
+if __name__ == "__main__":
+    # Run the assistant
+    # file = upload_file("data/airbnb-faq.pdf")
+    # assistant = create_assistant(file)
+    new_message = generate_response("What's the check in time?", "123", "John")
+    
+    # new_message = generate_response("What's the pin for the lockbox?", "456", "Sarah")
 
-new_message = generate_response("What's the pin for the lockbox?", "456", "Sarah")
+    # new_message = generate_response("What was my previous question?", "123", "John")
 
-new_message = generate_response("What was my previous question?", "123", "John")
-
-new_message = generate_response("What was my previous question?", "456", "Sarah")
+    # new_message = generate_response("What was my previous question?", "456", "Sarah")
